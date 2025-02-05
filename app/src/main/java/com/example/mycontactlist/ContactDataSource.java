@@ -62,4 +62,19 @@ public class ContactDataSource {
         }
         return didSucceed;
     }
+    public int getLastContactID(){
+        int lastId;
+        try {
+            String query = "SELECT MAX(_id) FROM contact";
+            Cursor cursor = database.rawQuery(query, null);
+
+            cursor.moveToFirst();
+            lastId = cursor.getInt(0);
+            cursor.close();
+        }
+        catch (Exception e) {
+            lastId = -1;
+        }
+        return lastId;
+    }
 }
