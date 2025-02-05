@@ -69,10 +69,10 @@ public class Contact {
     public String getCellNumber() {
         return cellNumber;
     }
-    public void seteMail (String s){
+    public void setEMail (String s){
         eMail = s;
     }
-    public String geteMail (){
+    public String getEMail (){
         return eMail;
     }
 }
