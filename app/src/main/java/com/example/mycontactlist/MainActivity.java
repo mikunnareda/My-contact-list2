@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private TextView tvBirthday;
     private Button btnChange, btnSave;
     private ToggleButton toggleButtonEdit;
+    private Contact currentContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
