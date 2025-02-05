@@ -91,4 +91,18 @@ public class ContactSettingsActivity extends AppCompatActivity {
             }
         });
     }
+    private void initSortOrderClick(){
+        RadioGroup rgSortOrder = findViewById(R.id.radioGroupSortOrder);
+        rgSortOrder.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton rbAscending = findViewById(R.id.radioAscending);
+                if (rbAscending.isChecked()){
+                    getSharedPreferences("MyContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortorder","ASC").apply();
+                } else {
+                    getSharedPreferences("MyContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortorder","DESC").apply();
+                }
+            }
+        });
+    }
 }
