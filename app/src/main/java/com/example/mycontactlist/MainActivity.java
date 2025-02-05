@@ -102,11 +102,34 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
     private void initSaveButton() {
         Button btnSave = findViewById(R.id.buttonSave);
-        btnSave.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, ContactSettingsActivity.class);
-            startActivity(intent);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean wasSuccessful;
+                ContactDataSource ds = new ContactDataSource(MainActivity.this);
+                try {
+                    ds.open();
+                    if (currentContact.getContactID() == -1) {
+                        wasSuccessful = ds.insertContact(currentContact);
+                    } else {
+                        wasSuccessful = ds.updateContact(currentContact);
+                    }
+                    ds.close();
+                } catch (Exception e) {
+                    wasSuccessful = false;
+                }
+                if (wasSuccessful) {
+                    ToggleButton editToggle = findViewById(R.id.toggleButtonEdit);
+                    editToggle.toggle();
+                    setForEditing(false);
+                }
+            }
         });
     }
+                /*-> {
+            Intent intent = new Intent(MainActivity.this, ContactSettingsActivity.class);
+            startActivity(intent);
+        }); }*/
     private void initTextChangedEvents() {
         final EditText etContactName = findViewById(R.id.editName);
         etContactName.addTextChangedListener(new TextWatcher() {
