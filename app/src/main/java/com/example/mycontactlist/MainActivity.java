@@ -43,13 +43,15 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         initToggleButton();
         initChangeDateButton();
         initSaveButton();
+        initTextChangedEvents();
 
+        currentContact = new Contact();
     }
     //3 buttons
     private void initImageButtons() {
-        ImageButton ibEdit = findViewById(R.id.listNavbar);
-        ImageButton ibMap = findViewById(R.id.mapNavbar);
-        ImageButton ibSettings = findViewById(R.id.settingsNavbar);
+        ImageButton ibEdit = findViewById(R.id.imageButtonList);
+        ImageButton ibMap = findViewById(R.id.imageButtonMap);
+        ImageButton ibSettings = findViewById(R.id.imageButtonSettings);
         //ibEdit.setOnClickListener(view -> { });Add function for Edit button
         //ibMap.setOnClickListener(view -> { });Add function for Map button
         //ibSettings.setOnClickListener(view -> { });Add function for Settings button
@@ -102,6 +104,35 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             startActivity(intent);
         });
     }
+    private void initTextChangedEvents() {
+        final EditText etContactName = findViewById(R.id.editName);
+        etContactName.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                currentContact.setContactName(etContactName.getText().toString());
+            }
+
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                // Auto-generated method stub
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Auto-generated method stub
+            }
+        });
+
+        final EditText etStreetAddress = findViewById(R.id.editAddress);
+        etStreetAddress.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                currentContact.setStreetAddress(etStreetAddress.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                // Auto-generated method stub
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Auto-generated method stub
+            }
+        });
+    }
     private void setForEditing(boolean enabled){
         EditText editName = findViewById(R.id.editName);
         EditText editAddress = findViewById(R.id.editAddress);
@@ -133,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         TextView birthday = findViewById(R.id.textBirthday);
        // SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         birthday.setText(DateFormat.format("MM/dd/yyyy",selectedDate));
+
+        //store selected date in current contact
+        currentContact.setBirthday(selectedDate);
     }
 
 }
