@@ -2,6 +2,9 @@ package com.example.mycontactlist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +22,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.SaveDateListener{
 
-    private EditText etContact, etAddress, etHomePhone, etCellPhone, etEmail, etBirthday;
+    private EditText editName, editAddress, editHome, editCell, editEmail;
     private TextView tvBirthday;
     private Button btnChange, btnSave;
     private ToggleButton toggleButtonEdit;
@@ -114,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
                 // Auto-generated method stub
             }
-
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // Auto-generated method stub
             }
@@ -132,6 +134,43 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 // Auto-generated method stub
             }
         });
+        final EditText editCity = findViewById(R.id.editCity);
+        editCity.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                currentContact.setCity(editCity.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+        final EditText editState = findViewById(R.id.editState);
+        editState.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                currentContact.setState(editState.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+        final EditText editZipcode = findViewById(R.id.editZipcode);
+        editZipcode.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                currentContact.setZipCode(editZipcode.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+        final EditText editEmail = findViewById(R.id.editEMail);
+        editEmail.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                currentContact.setEMail(editEmail.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+        final EditText editHome = findViewById(R.id.editHome);
+        editHome.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+        final EditText editCell = findViewById(R.id.editCell);
+        editCell.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
     private void setForEditing(boolean enabled){
         EditText editName = findViewById(R.id.editName);
