@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import android.content.Intent;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class ContactSettingsActivity extends AppCompatActivity {
 
@@ -72,5 +73,22 @@ public class ContactSettingsActivity extends AppCompatActivity {
         } else {
             rbDescending.setChecked(true);
         }
+    }
+    private void initSOrtByClick(){
+        RadioGroup rgSortBy = findViewById(R.id.radioGroupSortBy);
+        rgSortBy.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton rbName = findViewById(R.id.radioName);
+                RadioButton rbCity = findViewById(R.id.radioCity);
+                if (rbName.isChecked()){
+                    getSharedPreferences("MyContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortfield","contactname").apply();
+                } else if (rbCity.isChecked()){
+                    getSharedPreferences("MyContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortfield","city").apply();
+                } else {
+                    getSharedPreferences("MyContactListPreferences",Context.MODE_PRIVATE).edit().putString("sortfield","birthday").apply();
+                }
+            }
+        });
     }
 }
