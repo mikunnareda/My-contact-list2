@@ -1,11 +1,13 @@
 package com.example.mycontactlist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import android.text.format.DateFormat;
 import java.util.Calendar;
+import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.SaveDateListener{
 
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard();
                 boolean wasSuccessful;
                 ContactDataSource ds = new ContactDataSource(MainActivity.this);
                 try {
@@ -195,6 +199,33 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         final EditText editCell = findViewById(R.id.editCell);
         editCell.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        EditText editName = findViewById(R.id.editName);
+        imm.hideSoftInputFromWindow(editName.getWindowToken(), 0);
+
+        EditText editAddress = findViewById(R.id.editAddress);
+        imm.hideSoftInputFromWindow(editAddress.getWindowToken(), 0);
+
+        EditText editCity = findViewById(R.id.editCity);
+        imm.hideSoftInputFromWindow(editCity.getWindowToken(), 0);
+
+        EditText editState = findViewById(R.id.editState);
+        imm.hideSoftInputFromWindow(editState.getWindowToken(), 0);
+
+        EditText editZipcode = findViewById(R.id.editZipcode);
+        imm.hideSoftInputFromWindow(editZipcode.getWindowToken(), 0);
+
+        EditText editPhone = findViewById(R.id.editHome);
+        imm.hideSoftInputFromWindow(editPhone.getWindowToken(), 0);
+
+        EditText editCell = findViewById(R.id.editCell);
+        imm.hideSoftInputFromWindow(editCell.getWindowToken(), 0);
+
+        EditText editEmail = findViewById(R.id.editEMail);
+        imm.hideSoftInputFromWindow(editEmail.getWindowToken(), 0);
+    }
     private void setForEditing(boolean enabled){
         EditText editName = findViewById(R.id.editName);
         EditText editAddress = findViewById(R.id.editAddress);
@@ -219,6 +250,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         buttonSave.setEnabled(enabled);
         if (enabled){
             editName.requestFocus();
+        } else {
+            ScrollView s = findViewById(R.id.scrollView);
+            s.fullScroll(ScrollView.FOCUS_UP);
         }
     }
     @Override
