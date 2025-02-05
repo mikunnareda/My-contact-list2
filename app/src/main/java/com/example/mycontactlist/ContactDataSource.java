@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
+import android.database.Cursor;
 
 public class ContactDataSource {
     private SQLiteDatabase database;

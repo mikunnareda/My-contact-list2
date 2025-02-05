@@ -113,8 +113,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 ContactDataSource ds = new ContactDataSource(MainActivity.this);
                 try {
                     ds.open();
+                    //insert contact
                     if (currentContact.getContactID() == -1) {
                         wasSuccessful = ds.insertContact(currentContact);
+                        //duplicate
                         if (wasSuccessful){
                             int newId = ds.getLastContactID();
                             currentContact.setContactID(newId);
