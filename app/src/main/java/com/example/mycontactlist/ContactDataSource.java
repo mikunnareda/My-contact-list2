@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ContactDataSource {
     private SQLiteDatabase database;
@@ -96,6 +97,37 @@ public class ContactDataSource {
             contactNames = new ArrayList<>();
         }
         return contactNames;
+    }
+    public ArrayList<Contact> getContacts() {
+        ArrayList<Contact> contacts = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM contact";
+            Cursor cursor = database.rawQuery(query, null);
+
+            Contact newContact;
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                newContact = new Contact();
+                newContact.setContactID(cursor.getInt(0));
+                newContact.setContactName(cursor.getString(1));
+                newContact.setStreetAddress(cursor.getString(2));
+                newContact.setCity(cursor.getString(3));
+                newContact.setState(cursor.getString(4));
+                newContact.setZipCode(cursor.getString(5));
+                newContact.setPhoneNumber(cursor.getString(6));
+                newContact.setCellNumber(cursor.getString(7));
+                newContact.setEMail(cursor.getString(8));
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(Long.valueOf(cursor.getString(9)));
+                newContact.setBirthday(calendar);
+                contacts.add(newContact);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } catch (Exception e) {
+            contacts = new ArrayList<>();
+        }
+        return contacts;
     }
 
 
