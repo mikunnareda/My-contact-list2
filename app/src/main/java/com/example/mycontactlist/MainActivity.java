@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                         //duplicate
                         if (wasSuccessful){
                             int newId = ds.getLastContactID();
+
                             currentContact.setContactID(newId);
                         }
                     } else {
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     ds.close();
                 } catch (Exception e) {
                     wasSuccessful = false;
+                    e.printStackTrace();
                 }
                 if (wasSuccessful) {
                     ToggleButton editToggle = findViewById(R.id.toggleButtonEdit);
