@@ -17,12 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ContactListActivity extends AppCompatActivity {
+    private ArrayList<Contact> contacts ;
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
             int position = viewHolder.getAdapterPosition();
+            int contactId = contacts.get(position).getContactID(); //get contact id
+            //pass contact id to main
             Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
+            intent.putExtra("contactID", contactId);
             startActivity(intent);
         }
     };
@@ -41,13 +45,36 @@ public class ContactListActivity extends AppCompatActivity {
         initMapButton();
         initSettingsButton();
 
-        // Load and display contacts
-        loadContacts();
-    }
+        // Load contacts
+        ContactDataSource ds = new ContactDataSource(this);
+        //ArrayList<Contact> contacts;   //   move to instance
 
-    private void initListButton() {
+        try {
+            ds.open();
+            contacts = ds.getContacts();
+            ds.close();
+
+            RecyclerView contactList = findViewById(R.id.rvContacts);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            contactList.setLayoutManager(layoutManager);
+
+            ContactAdapter contactAdapter = new ContactAdapter(contacts);
+            contactAdapter.setOnItemClickListener(onItemClickListener);//pass click listener to adapter
+            contactList.setAdapter(contactAdapter);
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
+        }
+    }
+    private void initListButton(){
         ImageButton ibList = findViewById(R.id.imageButtonList);
         ibList.setEnabled(false); // Disable the List button because already on the page
+        /*ibList.setOnClickListener(view -> {
+            Intent intent = new Intent (ContactListActivity.this, ContactListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+        });*/
     }
 
     private void initMapButton() {
@@ -66,26 +93,5 @@ public class ContactListActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
-    }
-    private void loadContacts() {
-        ContactDataSource ds = new ContactDataSource(this);
-        ArrayList<String> names;
-
-        try {
-            ds.open();
-            names = ds.getContactName();
-            ds.close();
-
-            RecyclerView contactList = findViewById(R.id.rvContacts);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            contactList.setLayoutManager(layoutManager);
-
-            ContactAdapter contactAdapter = new ContactAdapter(names);
-            contactAdapter.setOnItemClickListener(onItemClickListener);//pass click listener to adapter
-            contactList.setAdapter(contactAdapter);
-        }
-        catch (Exception e) {
-            Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
-        }
     }
 }

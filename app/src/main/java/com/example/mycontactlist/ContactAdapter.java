@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter {
-    private ArrayList<String> contactData;
+    private ArrayList<Contact> contactData;
     private View.OnClickListener mOnItemClickListener;
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewContact;
@@ -38,8 +38,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
         }
     }
 
-
-    public ContactAdapter(ArrayList<String> arrayList) {
+    public ContactAdapter(ArrayList<Contact> arrayList) {
         contactData = arrayList;
     }
     public void setOnItemClickListener(View.OnClickListener itemClickListener) {
@@ -49,7 +48,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_item_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_item_view, parent, false); //change simple item view to list item
         return new ContactViewHolder(v);
     }
 
