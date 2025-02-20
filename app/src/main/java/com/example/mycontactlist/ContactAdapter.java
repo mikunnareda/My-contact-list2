@@ -15,19 +15,19 @@ public class ContactAdapter extends RecyclerView.Adapter {
     private ArrayList<Contact> contactData;
     private View.OnClickListener mOnItemClickListener;
     public class ContactViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewContact;
+        public TextView textContactName;
         public TextView textPhone;
         public Button deleteButton;
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewContact = itemView.findViewById(R.id.textViewName);
+            textContactName = itemView.findViewById(R.id.textContactName);
             textPhone = itemView.findViewById(R.id.textPhoneNumber);
             deleteButton = itemView.findViewById(R.id.buttonDeleteContact);
             itemView.setTag(this);
             itemView.setOnClickListener(mOnItemClickListener);
         }
         public TextView getContactTextView() {
-            return textViewContact;
+            return textContactName;
         }
         public TextView getPhoneTextView() {
             return textPhone;
@@ -48,7 +48,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_item_view, parent, false); //change simple item view to list item
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false); //change simple item view to list item
         return new ContactViewHolder(v);
     }
 

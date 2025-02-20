@@ -202,10 +202,22 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
         final EditText editHome = findViewById(R.id.editHome);
-        editHome.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        editHome.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+            public void afterTextChanged (Editable s){
+                currentContact.setPhoneNumber(editHome.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            public void onTextChanged(CharSequence s, int start, int before, int count){}
+        });
 
         final EditText editCell = findViewById(R.id.editCell);
-        editCell.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        editCell.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+            public void afterTextChanged (Editable s){
+                currentContact.setCellNumber(editCell.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+            public void onTextChanged(CharSequence s, int start, int before, int count){}
+        });
     }
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
