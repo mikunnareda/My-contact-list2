@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
         final EditText editState = findViewById(R.id.editState);
         editState.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
         final EditText editZipcode = findViewById(R.id.editZipcode);
         editZipcode.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -193,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
         final EditText editEmail = findViewById(R.id.editEMail);
         editEmail.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -201,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
         final EditText editHome = findViewById(R.id.editHome);
         editHome.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
             public void afterTextChanged (Editable s){

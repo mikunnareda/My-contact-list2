@@ -17,11 +17,13 @@ public class ContactAdapter extends RecyclerView.Adapter {
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         public TextView textContactName;
         public TextView textPhone;
+        public TextView textEmail;
         public Button deleteButton;
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
             textContactName = itemView.findViewById(R.id.textContactName);
             textPhone = itemView.findViewById(R.id.textPhoneNumber);
+            textEmail = itemView.findViewById(R.id.textEmail);
             deleteButton = itemView.findViewById(R.id.buttonDeleteContact);
             itemView.setTag(this);
             itemView.setOnClickListener(mOnItemClickListener);
@@ -32,6 +34,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
         public TextView getPhoneTextView() {
             return textPhone;
         }
+        public TextView getEmailTextView(){return textEmail;}
 
         public Button getDeleteButton() {
             return deleteButton;
@@ -57,6 +60,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
         ContactViewHolder cvh = (ContactViewHolder) holder;
         cvh.getContactTextView().setText(contactData.get(position).getContactName());
         cvh.getPhoneTextView().setText(contactData.get(position).getPhoneNumber());
+        cvh.getEmailTextView().setText(contactData.get(position).getEMail());
     }
 
     @Override
