@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import android.graphics.Color;
 
 public class ContactAdapter extends RecyclerView.Adapter {
     private ArrayList<Contact> contactData;
@@ -66,6 +67,13 @@ public class ContactAdapter extends RecyclerView.Adapter {
         cvh.getContactTextView().setText(contactData.get(position).getContactName());
         cvh.getPhoneTextView().setText(contactData.get(position).getPhoneNumber());
         cvh.getEmailTextView().setText(contactData.get(position).getEMail());
+
+        if (position % 2 == 0) {
+            cvh.getContactTextView().setTextColor(Color.RED);
+        } else {
+            cvh.getContactTextView().setTextColor(Color.BLUE);
+        }
+
         if (isDeleting) {
             cvh.getDeleteButton().setVisibility(View.VISIBLE);
             cvh.getDeleteButton().setOnClickListener(new View.OnClickListener() {
