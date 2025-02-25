@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,4 +83,27 @@ public class ContactAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return contactData.size();
     }
+    public void setDelete(boolean b) {  //Enables/disables delete mode
+        isDeleting = b;
+    }
+
+    //Deletes contact from database and list
+    private void deleteItem(int position) {
+        Contact contact = contactData.get(position);
+        ContactDataSource ds = new ContactDataSource(parentContext);
+        try {
+            ds.open();
+            boolean didDelete = ds.deleteContact(contact.getContactID());
+            ds.close();
+            if (didDelete) {
+                contactData.remove(position);
+                notifyDataSetChanged();
+            } else {
+                Toast.makeText(parentContext, "Delete Failed!", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(parentContext, "Delete Failed!", Toast.LENGTH_LONG).show();
+        }
+    }
 }
+
