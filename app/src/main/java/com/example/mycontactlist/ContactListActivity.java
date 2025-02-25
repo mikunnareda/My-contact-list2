@@ -1,5 +1,6 @@
 package com.example.mycontactlist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -51,13 +52,19 @@ public class ContactListActivity extends AppCompatActivity {
         initAddContactButton();
         initDeleteSwitch();
 
+        //Retrieve sorting preferences
+      /*  String sortBy = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE)
+                .getString("sortfield", "contactname");
+        String sortOrder = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE)
+                .getString("sortorder", "ASC");
+
         // Load contacts
         ContactDataSource ds = new ContactDataSource(this);
         //ArrayList<Contact> contacts;   //   move to instance
 
         try {
             ds.open();
-            contacts = ds.getContacts();
+            contacts = ds.getContacts(sortBy, sortOrder);
             ds.close();
 
             RecyclerView contactList = findViewById(R.id.rvContacts);
@@ -70,6 +77,35 @@ public class ContactListActivity extends AppCompatActivity {
             contactList.setAdapter(contactAdapter);
         }
         catch (Exception e) {
+            Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
+        }*/
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Retrieve sorting preferences
+        String sortBy = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE)
+                .getString("sortfield", "contactname");
+        String sortOrder = getSharedPreferences("MyContactListPreferences", Context.MODE_PRIVATE)
+                .getString("sortorder", "ASC");
+
+        // Load contacts with sorting
+        ContactDataSource ds = new ContactDataSource(this);
+        try {
+            ds.open();
+            contacts = ds.getContacts(sortBy, sortOrder);
+            ds.close();
+
+            RecyclerView contactList = findViewById(R.id.rvContacts);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            contactList.setLayoutManager(layoutManager);
+
+            contactAdapter = new ContactAdapter(contacts, this);
+            contactAdapter.setOnItemClickListener(onItemClickListener);
+            contactList.setAdapter(contactAdapter);
+
+        } catch (Exception e) {
             Toast.makeText(this, "Error retrieving contacts", Toast.LENGTH_LONG).show();
         }
     }

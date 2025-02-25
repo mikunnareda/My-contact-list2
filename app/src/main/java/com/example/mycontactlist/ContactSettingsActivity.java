@@ -28,6 +28,10 @@ public class ContactSettingsActivity extends AppCompatActivity {
         initListButton();
         initMapButton();
         initSettingsButton();
+
+        initSettings();
+        initSortByClick();
+        initSortOrderClick();
     }
     private void initListButton() {
         ImageButton ibList = findViewById(R.id.imageButtonList);
@@ -74,8 +78,8 @@ public class ContactSettingsActivity extends AppCompatActivity {
             rbDescending.setChecked(true);
         }
     }
-    private void initSOrtByClick(){
-        RadioGroup rgSortBy = findViewById(R.id.radioGroupSortBy);
+    private void initSortByClick(){
+        RadioGroup rgSortBy = findViewById(R.id.radioGroupSortBy); //chat fix
         rgSortBy.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
