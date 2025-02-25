@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         if (contactID !=-1){initContact(contactID);} //if valid contactID passed then load*/
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            initContact(extras.getInt("contactid"));
+            initContact(extras.getInt("contactID"));
         } else {currentContact = new Contact();}
     }
     //3 buttons

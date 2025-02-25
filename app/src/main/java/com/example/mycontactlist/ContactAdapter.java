@@ -70,12 +70,17 @@ public class ContactAdapter extends RecyclerView.Adapter {
             cvh.getDeleteButton().setVisibility(View.VISIBLE);
             cvh.getDeleteButton().setOnClickListener(new View.OnClickListener() {
                 @Override
+                /*public void onClick(View view) {
+                    deleteItem(position);*/
                 public void onClick(View view) {
-                    deleteItem(position);
+                    int currentPosition = holder.getAdapterPosition(); // ✅ Lookup the latest position
+                    if (currentPosition != RecyclerView.NO_POSITION) {
+                        deleteItem(currentPosition);
+                    }
                 }
             });
         } else {
-            cvh.getDeleteButton().setVisibility(View.INVISIBLE);
+            cvh.getDeleteButton().setVisibility(View.INVISIBLE); //fix invisible to gone
         }
     }
 
@@ -85,6 +90,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
     }
     public void setDelete(boolean b) {  //Enables/disables delete mode
         isDeleting = b;
+        notifyDataSetChanged();
     }
 
     //Deletes contact from database and list

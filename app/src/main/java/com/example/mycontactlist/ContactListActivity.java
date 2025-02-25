@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 
 public class ContactListActivity extends AppCompatActivity {
     private ArrayList<Contact> contacts ;
+    private ContactAdapter contactAdapter;
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -45,6 +48,8 @@ public class ContactListActivity extends AppCompatActivity {
         initListButton();
         initMapButton();
         initSettingsButton();
+        initAddContactButton();
+        initDeleteSwitch();
 
         // Load contacts
         ContactDataSource ds = new ContactDataSource(this);
@@ -59,7 +64,8 @@ public class ContactListActivity extends AppCompatActivity {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             contactList.setLayoutManager(layoutManager);
 
-            ContactAdapter contactAdapter = new ContactAdapter(contacts);
+            //*delete* ContactAdapter contactAdapter = new ContactAdapter(contacts,this);
+            contactAdapter = new ContactAdapter(contacts,this);
             contactAdapter.setOnItemClickListener(onItemClickListener);//pass click listener to adapter
             contactList.setAdapter(contactAdapter);
         }
@@ -102,6 +108,16 @@ public class ContactListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ContactListActivity.this, MainActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+    private void initDeleteSwitch() {
+        Switch s = findViewById(R.id.switchDelete);
+        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                contactAdapter.setDelete(isChecked);
+                contactAdapter.notifyDataSetChanged();
             }
         });
     }
