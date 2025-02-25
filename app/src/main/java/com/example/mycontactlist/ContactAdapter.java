@@ -1,5 +1,6 @@
 package com.example.mycontactlist;
 
+import android.content.Context;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 public class ContactAdapter extends RecyclerView.Adapter {
     private ArrayList<Contact> contactData;
     private View.OnClickListener mOnItemClickListener;
+    private boolean isDeleting;
+    private Context parentContext;
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         public TextView textContactName;
         public TextView textPhone;
@@ -41,8 +44,9 @@ public class ContactAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public ContactAdapter(ArrayList<Contact> arrayList) {
+    public ContactAdapter(ArrayList<Contact> arrayList, Context context) {
         contactData = arrayList;
+        parentContext = context;
     }
     public void setOnItemClickListener(View.OnClickListener itemClickListener) {
         mOnItemClickListener = itemClickListener;
@@ -61,6 +65,17 @@ public class ContactAdapter extends RecyclerView.Adapter {
         cvh.getContactTextView().setText(contactData.get(position).getContactName());
         cvh.getPhoneTextView().setText(contactData.get(position).getPhoneNumber());
         cvh.getEmailTextView().setText(contactData.get(position).getEMail());
+        if (isDeleting) {
+            cvh.getDeleteButton().setVisibility(View.VISIBLE);
+            cvh.getDeleteButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteItem(position);
+                }
+            });
+        } else {
+            cvh.getDeleteButton().setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
