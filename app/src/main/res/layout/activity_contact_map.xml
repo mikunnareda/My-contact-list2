@@ -55,7 +55,7 @@
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Enter Street Address"
+        android:hint="Enter Street Address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addressMapTextView" />
 
@@ -67,7 +67,7 @@
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="text"
-        android:text="City"
+        android:hint="City"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
@@ -79,7 +79,7 @@
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="text"
-        android:text="State"
+        android:hint="State"
         app:layout_constraintStart_toEndOf="@+id/editCity"
         app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
@@ -91,7 +91,7 @@
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Zipcode"
+        android:hint="Zipcode"
         app:layout_constraintStart_toEndOf="@+id/editState"
         app:layout_constraintTop_toBottomOf="@+id/editAddress" />
 
