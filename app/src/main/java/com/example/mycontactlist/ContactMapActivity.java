@@ -2,6 +2,8 @@ package com.example.mycontactlist;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class ContactMapActivity extends AppCompatActivity {
+    LocationManager locationManager;
+    LocationListener gpsListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class ContactMapActivity extends AppCompatActivity {
 
                 List<Address> addresses = null; //to hold an address object is declared
 
-                Geocoder geo = new Geocoder(ContactMapActivity.this); //declare and assigne new geocoder object
+                Geocoder geo = new Geocoder(ContactMapActivity.this); //declare and assign new geocoder object
                 try {
                     addresses = geo.getFromLocationName(address, 1);
                 } catch (IOException e) {
