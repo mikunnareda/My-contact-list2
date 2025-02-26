@@ -1,17 +1,23 @@
 package com.example.mycontactlist;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -40,32 +46,70 @@ public class ContactMapActivity extends AppCompatActivity {
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editAddress = (EditText) findViewById(R.id.editAddress);
-                EditText editCity = (EditText) findViewById(R.id.editCity);
-                EditText editState = (EditText) findViewById(R.id.editState);
-                EditText editZipCode = (EditText) findViewById(R.id.editZipcode);
-
-                //format for a call to geocoding service
-                String address = editAddress.getText().toString() + ", " +
-                        editCity.getText().toString() + ", " +
-                        editState.getText().toString() + ", " +
-                        editZipCode.getText().toString();
-
-                List<Address> addresses = null; //to hold an address object is declared
-
-                Geocoder geo = new Geocoder(ContactMapActivity.this); //declare and assign new geocoder object
                 try {
-                    addresses = geo.getFromLocationName(address, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                TextView txtLatitude = (TextView) findViewById(R.id.textLatitude);
-                TextView txtLongitude = (TextView) findViewById(R.id.textLongtitude);
+                    locationManager = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
 
-                txtLatitude.setText(String.valueOf(addresses.get(0).getLatitude()));
-                txtLongitude.setText(String.valueOf(addresses.get(0).getLongitude()));
+                    gpsListener = new LocationListener() {
+                        public void onLocationChanged(Location location) {
+                            TextView txtLatitude = (TextView) findViewById(R.id.textLatitude);
+                            TextView txtLongitude = (TextView) findViewById(R.id.textLongtitude);
+                            TextView txtAccuracy = (TextView) findViewById(R.id.textAccuracy);
+
+                            txtLatitude.setText(String.valueOf(location.getLatitude()));
+                            txtLongitude.setText(String.valueOf(location.getLongitude()));
+                            txtAccuracy.setText(String.valueOf(location.getAccuracy()));
+                        }
+
+                        public void onStatusChanged(String provider, int status, Bundle extras) {}
+                        public void onProviderEnabled(String provider) {}
+                        public void onProviderDisabled(String provider) {}
+                    };
+
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+                }
+                catch (Exception e) {
+                    Toast.makeText(getBaseContext(), "Error, Location not available", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            locationManager.removeUpdates(gpsListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void startLocationUpdates(){if (Build.VERSION.SDK_INT >= 23 &&
+            ContextCompat.checkSelfPermission(getBaseContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(getBaseContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        return;
+    }
 
+        try {
+            locationManager = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
+
+            gpsListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    TextView txtLatitude = findViewById(R.id.textLatitude);
+                    TextView txtLongitude = findViewById(R.id.textLongtitude);
+                    TextView txtAccuracy = findViewById(R.id.textAccuracy);
+
+                    txtLatitude.setText(String.valueOf(location.getLatitude()));
+                    txtLongitude.setText(String.valueOf(location.getLongitude()));
+                    txtAccuracy.setText(String.valueOf(location.getAccuracy()));
+                }
+
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
+                public void onProviderEnabled(String provider) {}
+                public void onProviderDisabled(String provider) {}
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+        } catch (Exception e) {
+            Toast.makeText(getBaseContext(), "Error, Location not available", Toast.LENGTH_LONG).show();
+        }
+    }
 }
