@@ -41,5 +41,6 @@
             android:value="AIzaSyAALTD8-2isC3MAJDtNWDaEzIBi2EoWUs8" />
 
     </application>
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
 
 </manifest>
