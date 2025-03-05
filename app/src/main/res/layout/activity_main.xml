@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
 
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="26dp"
 
         android:ems="8"
         android:inputType="phone"
@@ -167,7 +167,7 @@
         android:layout_width="191dp"
         android:layout_height="47dp"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="26dp"
         android:ems="8"
         android:inputType="phone"
         android:maxLength="14"
