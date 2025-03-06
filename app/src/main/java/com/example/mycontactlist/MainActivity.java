@@ -3,6 +3,7 @@ package com.example.mycontactlist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private ToggleButton toggleButtonEdit;
     private Contact currentContact;
     final int PERMISSION_REQUEST_PHONE = 102;
+    final int PERMISSION_REQUEST_CAMERA = 103;
+    final int CAMERA_REQUEST = 1888;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         initSaveButton();
         initTextChangedEvents();
         initCallFunction();
+        initImageButton();
 
      /*   currentContact = new Contact();
 
@@ -304,6 +309,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             editPhone.setInputType(InputType.TYPE_NULL);
             editCell.setInputType(InputType.TYPE_NULL);
         }
+        ImageButton picture = findViewById(R.id.imageContact);
+        picture.setEnabled(enabled);
+
     }
     @Override
     public void didFinishDatePickerDialog(Calendar selectedDate) {
@@ -335,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         EditText editEmail = findViewById(R.id.editEMail);
         TextView birthDay = findViewById(R.id.textBirthday);
 
+
         editName.setText(currentContact.getContactName());
         editAddress.setText(currentContact.getStreetAddress());
         editCity.setText(currentContact.getCity());
@@ -345,6 +354,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         editCell.setText(currentContact.getCellNumber());
         editEmail.setText(currentContact.getEMail());
         birthDay.setText(DateFormat.format("MM/dd/yyyy", currentContact.getBirthday().getTimeInMillis()).toString());
+
+        ImageButton picture = (ImageButton) findViewById (R.id.imageContact);
+        if (currentContact.getPicture() != null) {
+            picture.setImageBitmap(currentContact.getPicture());
+        } else {
+            picture.setImageResource(R.drawable.ic_launcher_foreground); // Default placeholder image
+        }
     }
     private void initCallFunction() {
         EditText editPhone = (EditText) findViewById(R.id.editHome);
@@ -362,6 +378,39 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             public boolean onLongClick(View arg0) {
                 checkPhonePermission(currentContact.getCellNumber());
                 return false;
+            }
+        });
+    }
+    private void initImageButton() {
+        ImageButton ib = findViewById(R.id.imageContact);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, android.Manifest.permission.CAMERA)) {
+                            Snackbar.make(findViewById(R.id.activity_main),
+                                            "The app needs permission to take pictures.",
+                                            Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("OK", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            ActivityCompat.requestPermissions(MainActivity.this,
+                                                    new String[]{android.Manifest.permission.CAMERA},
+                                                    PERMISSION_REQUEST_CAMERA);
+                                        }
+                                    }).show();
+                        } else {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{android.Manifest.permission.CAMERA},
+                                    PERMISSION_REQUEST_CAMERA);
+                        }
+                    } else {
+                        takePhoto();
+                    }
+                } else {
+                    takePhoto();
+                }
             }
         });
     }
@@ -409,8 +458,34 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 }
                 break; //added
             }
+            case PERMISSION_REQUEST_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takePhoto();
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "You will not be able to save contact pictures from this app", Toast.LENGTH_LONG).show();
+                }
+                break; //use break instead of return
+            }
         }
     }
+    public void takePhoto() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data); // Add
+        if (requestCode == CAMERA_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Bitmap scaledPhoto = Bitmap.createScaledBitmap(photo, 144, 144, true);
+                ImageButton imageContact = findViewById(R.id.imageContact);
+                imageContact.setImageBitmap(scaledPhoto);
+                currentContact.setPicture(scaledPhoto);
+            }
+        }
+    }
+
     private void callContact(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));

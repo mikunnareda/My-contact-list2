@@ -37,6 +37,15 @@
     </LinearLayout>
 
     <!-- Contact -->
+    <ImageButton
+        android:id="@+id/imageContact"
+        android:layout_width="65dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textContact" />
+
     <TextView
         android:id="@+id/textContact"
         android:layout_width="wrap_content"
@@ -52,15 +61,16 @@
         android:id="@+id/editName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
         android:ems="14"
-        android:inputType="textPersonName"
         android:hint="Enter Name"
-        app:layout_constraintTop_toBottomOf="@id/textContact"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageContact"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textContact" />
 
     <!-- Address-->
     <TextView
