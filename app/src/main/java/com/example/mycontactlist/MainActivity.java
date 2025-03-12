@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
     private void initCallFunction() {
-        EditText editPhone = (EditText) findViewById(R.id.editHome);
+        EditText editPhone = findViewById(R.id.editHome);
         editPhone.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View arg0) {
@@ -372,12 +372,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
         });
 
-        EditText editCell = (EditText) findViewById(R.id.editCell);
+        EditText editCell = findViewById(R.id.editCell);
         editCell.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View arg0) {
-                checkPhonePermission(currentContact.getCellNumber());
-                return false;
+                openSMSApp(currentContact.getCellNumber());
+                return true;
             }
         });
     }
@@ -497,4 +497,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             startActivity(intent);
         }
     }
+    private void openSMSApp(String phoneNumber) {
+        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+        smsIntent.setData(Uri.parse("smsto:" + phoneNumber)); // "smsto:" opens the SMS app
+        smsIntent.putExtra("sms_body", "Hello!"); // You can pre-fill a message
+
+        if (smsIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(smsIntent);
+        } else {
+            Toast.makeText(this, "No messaging app found", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
