@@ -498,13 +498,20 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
     private void openSMSApp(String phoneNumber) {
-        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-        smsIntent.setData(Uri.parse("smsto:" + phoneNumber)); // "smsto:" opens the SMS app
-        smsIntent.putExtra("sms_body", "Hello!"); // You can pre-fill a message
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            Toast.makeText(this, "No phone number available for SMS", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        if (smsIntent.resolveActivity(getPackageManager()) != null) {
+        Toast.makeText(this, "Opening SMS app...", Toast.LENGTH_SHORT).show(); // Debugging log
+
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+        smsIntent.setData(Uri.parse("smsto:" + phoneNumber)); // "smsto:" ensures only SMS apps handle this
+        smsIntent.putExtra("sms_body", "Hello!");
+
+        try {
             startActivity(smsIntent);
-        } else {
+        } catch (Exception e) {
             Toast.makeText(this, "No messaging app found", Toast.LENGTH_SHORT).show();
         }
     }
